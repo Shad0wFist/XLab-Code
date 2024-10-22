@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Users\\user\\Desktop\\Folder\\ConsoleApp1\\ConsoleApp1.csproj": {}
+    "d:\\Проекты\\XLab\\XLab-Code\\ConsoleApp1\\ConsoleApp1.csproj": {}
   },
   "projects": {
-    "c:\\Users\\user\\Desktop\\Folder\\ConsoleApp1\\ConsoleApp1.csproj": {
+    "d:\\Проекты\\XLab\\XLab-Code\\ConsoleApp1\\ConsoleApp1.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\user\\Desktop\\Folder\\ConsoleApp1\\ConsoleApp1.csproj",
+        "projectUniqueName": "d:\\Проекты\\XLab\\XLab-Code\\ConsoleApp1\\ConsoleApp1.csproj",
         "projectName": "ConsoleApp1",
-        "projectPath": "c:\\Users\\user\\Desktop\\Folder\\ConsoleApp1\\ConsoleApp1.csproj",
-        "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\user\\Desktop\\Folder\\ConsoleApp1\\obj\\",
+        "projectPath": "d:\\Проекты\\XLab\\XLab-Code\\ConsoleApp1\\ConsoleApp1.csproj",
+        "packagesPath": "C:\\Users\\ilyas\\.nuget\\packages\\",
+        "outputPath": "d:\\Проекты\\XLab\\XLab-Code\\ConsoleApp1\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\user\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\ilyas\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"

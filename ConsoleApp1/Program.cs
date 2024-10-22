@@ -1,16 +1,19 @@
-﻿internal class Program
+﻿using System.Runtime.CompilerServices;
+
+internal class Program
 {
     private static void Main(string[] args)
     {
-        int i = 0;
-        long l = (long)int.MaxValue + 3;
+        MyList list= new MyList(7);
+        list.Add(14);
+        list.Add(18);
+        list.Add(0);
+        list.Add(-123);
+        Console.WriteLine(list.ToString());
 
-        Console.WriteLine($"l = {l}");
-
-        i = (int)l;
-
-        Console.WriteLine($"i = {i}");
-        var result = Console.ReadLine();
-        Console.WriteLine(result);
+        MyList list2= new MyList([1,2,3,2,4,5,2,6,2,2,2]);
+        Console.WriteLine(list2.ToString());
+        list2.DeleteAll(2);
+        Console.WriteLine(list2.ToString());
     }
 }
