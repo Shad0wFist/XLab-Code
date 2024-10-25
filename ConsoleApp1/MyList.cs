@@ -1,169 +1,173 @@
-public class MyList
+public class MyList<T>
 {
-    private int[] array;
-    private int size;
+    private T[] array;
+    private int count;
 
     // Задание начального размера
-    public MyList(int initialSize) 
+    public MyList(int initialSize)
     {
-        array = new int[initialSize];
-        size = 0;
+        array = new T[initialSize];
+        count = 0;
     }
 
     // Задание начальных элементов
-    public MyList(int[] initialElements)
+    public MyList(T[] initialElements)
     {
-        array = new int[initialElements.Length];
+        array = new T[initialElements.Length];
         for (int i = 0; i < initialElements.Length; i++)
         {
             array[i] = initialElements[i];
         }
-        size = initialElements.Length;
+        count = initialElements.Length;
     }
 
-    // Добавление элемента в конец списка
-    public void Add(int item)
+    // Добавление элемента
+    public void Add(T item)
     {
-        if (size == array.Length)
+        if (count == array.Length)
         {
-            int[] newArray = new int[array.Length + 1];
-            for (int i = 0; i < array.Length; i++)
-            {
-                newArray[i] = array[i];
-            }
-            array = newArray;
+            ResizeArray();
         }
-
-        array[size] = item;
-        size++;
+        array[count] = item;
+        count++;
     }
 
     // Удаление первого вхождения элемента
-    public void Delete(int item)
+    public void Delete(T item)
     {
-        int index = -1;
-
-        for (int i = 0; i < size; i++)
-        {
-            if (array[i] == item)
-            {
-                index = i;
-                break;
-            }
-        }
-
+        int index = IndexOf(item);  // индекс элемента
         if (index != -1)
         {
-            for (int i = index; i < size - 1; i++)
-            {
-                array[i] = array[i + 1];
-            }
-
-            size--;
-
-            int[] newArray = new int[size];
-            for (int i = 0; i < size; i++)
-            {
-                newArray[i] = array[i];
-            }
-            array = newArray;
+            DeleteAt(index);
         }
     }
 
     // Вставка элемента по индексу
-    public void Insert(int index, int item)
+    public void Insert(int index, T item)
     {
-        if (index < 0 || index > size)
+        if (index < 0 || index > count)
         {
-            throw new ArgumentOutOfRangeException("Индекс вне диапазона");
+            throw new ArgumentOutOfRangeException(nameof(index), "Индекс вне диапазона.");
         }
 
-        if (size == array.Length)
+        if (count == array.Length)
         {
-            int[] newArray = new int[array.Length + 1];
-            for (int i = 0; i < array.Length; i++)
-            {
-                newArray[i] = array[i];
-            }
-            array = newArray;
+            ResizeArray(); 
         }
 
-        for (int i = size; i > index; i--)
+        // Сдвигаем элементы вправо
+        for (int i = count; i > index; i--)
         {
             array[i] = array[i - 1];
         }
-
         array[index] = item;
-        size++;
+        count++;
     }
 
     // Очистка списка
     public void Clear()
     {
-        array = new int[1];
-        size = 0;
-    }
-
-    // Получение строки, представляющей список
-    public override string ToString()
-    {
-        string result = "[";
-
-        for (int i = 0; i < size; i++)
-        {
-            result += array[i];
-            if (i < size - 1)
-                result += ", ";
-        }
-
-        result += "]";
-        return result;
+        array = new T[array.Length];
+        count = 0;
     }
 
     // Удаление элемента по индексу
     public void DeleteAt(int index)
     {
-        if (index < 0 || index >= size)
+        if (index < 0 || index >= count)
         {
-            throw new ArgumentOutOfRangeException("Индекс вне диапазона");
+            throw new ArgumentOutOfRangeException(nameof(index), "Индекс вне диапазона.");
         }
 
-        for (int i = index; i < size - 1; i++)
+        // Сдвигаем элементы влево
+        for (int i = index; i < count - 1; i++)
         {
             array[i] = array[i + 1];
         }
-
-        size--;
-
-        int[] newArray = new int[size];
-        for (int i = 0; i < size; i++)
-        {
-            newArray[i] = array[i];
-        }
-        array = newArray;
+        count--;
+        array[count] = default;  // Освобождаем последний элемент
     }
 
     // Удаление всех вхождений элемента
-    public void DeleteAll(int item)
+    public void DeleteAll(T item)
     {
-        int newSize = 0;
-
-        for (int i = 0; i < size; i++)
+        int index;
+        while ((index = IndexOf(item)) != -1)
         {
-            if (array[i] != item)
+            DeleteAt(index);
+        }
+    }
+
+    // Изменение размера массива
+    private void ResizeArray()
+    {
+        int newSize = array.Length * 2;
+        T[] newArray = new T[newSize];
+        CopyArray(array, newArray);
+        array = newArray;
+    }
+
+    // Копирование элементов
+    private void CopyArray(T[] source, T[] destination)
+    {
+        for (int i = 0; i < source.Length; i++)
+        {
+            destination[i] = source[i];
+        }
+    }
+
+    // Нахождение индекса элемента
+    public int IndexOf(T item)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            if (EqualityComparer<T>.Default.Equals(array[i], item))
             {
-                array[newSize] = array[i];
-                newSize++;
+                return i;
             }
         }
+        return -1;  // Возвращаем -1, если элемент не найден
+    }
 
-        size = newSize;
-
-        int[] newArray = new int[size];
-        for (int i = 0; i < size; i++)
+    // Каждый элемент
+    public void ForEach(Action<T> action)
+    {
+        for (int i = 0; i < count; i++)
         {
-            newArray[i] = array[i];
+            action(array[i]);  // Выполняем действие для каждого элемента
         }
-        array = newArray;
+    }
+
+    // Поиск элемента по условию
+    public T Find(Func<T, bool> predicate)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            if (predicate(array[i]))
+            {
+                return array[i];
+            }
+        }
+        return default;  // Возвращаем значение по умолчанию, если элемент не найден
+    }
+
+    // Сортировка массива
+    public void Sort(Comparison<T> comparison)
+    {
+        Array.Sort(array, 0, count, Comparer<T>.Create(comparison));
+    }
+
+
+    // Получение строки, представляющей список
+    public override string ToString()
+    {
+        string result = "[";
+        for (int i = 0; i < count; i++)
+        {
+            result += array[i];
+            if (i < count - 1) result += ", ";
+        }
+        result += "]";
+        return result;
     }
 }
